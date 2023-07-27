@@ -3,7 +3,7 @@ import requests
 
 links=[]
 
-for page in range(1, 4):
+for page in range(1, 3):
      url = "https://sid.ir/search/paper/%D8%B1%D9%88%D8%A7%D9%86%D8%B4%D9%86%D8%A7%D8%B3%DB%8C/fa/" + "?page=" +str(page)+"&sort=1&ftyp=all&fgrp=all&fyrs=1379%2c1402"
      furl = requests.get(url)
      jsoup = BeautifulSoup(furl.text , 'html.parser')
@@ -22,12 +22,20 @@ for page in range(1, 4):
           try:
               for link in b.find_all(id='downloadbottom'):
                   link = link.find('a').get('href')
-                  l=links.append('sid.ir'+ link)
+                  l=links.append('https://sid.ir'+ link)
           except:
               continue
 
 
 
+'''download'''
+i=1
+for l in links:
+      response=requests.get(l)
+      adr='pdf/%s.pdf' %i
+      with open(adr, 'wb') as f:
+          f.write(response.content)
+      i=i+1
 
 
-
+print("Download completed")
